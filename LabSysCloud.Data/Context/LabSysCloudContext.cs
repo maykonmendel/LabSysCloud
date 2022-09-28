@@ -9,9 +9,9 @@ using LabSysCloud.Data.Mapping;
 
 namespace LabSysCloud.Data.Context
 {
-    public class AppContext : DbContext
+    public class LabSysCloudContext : DbContext
     {
-        public AppContext(DbContextOptions<AppContext> options) : base(options)
+        public LabSysCloudContext(DbContextOptions<LabSysCloudContext> options) : base(options)
         {
 
         }

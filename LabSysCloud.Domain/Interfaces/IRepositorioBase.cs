@@ -11,7 +11,7 @@ namespace LabSysCloud.Domain.Interfaces
         void Adicionar(TEntity obj);
         void Atualizar(TEntity obj);
         void Deletar(long id);
-        IList<TEntity> ListarTodos();
-        TEntity ListarPorId(long id);
+        IList<TEntity> BuscarTodos();
+        TEntity BuscarPorId(long id);
     }
 }
