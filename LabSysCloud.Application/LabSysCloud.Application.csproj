@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LabSysCloud.Service\LabSysCloud.Service.csproj" />
+    <ProjectReference Include="..\LabSysCloud.Domain\LabSysCloud.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
