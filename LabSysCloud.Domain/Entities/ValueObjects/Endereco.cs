@@ -15,5 +15,7 @@ namespace LabSysCloud.Domain.Entities.ValueObjects
         public string Bairro { get; set; }
         public string Cidade { get; set; }
         public Estado Estado { get; set; }
+        public long PacienteId { get; set; }
+        public Paciente Paciente { get; set; }
     }
 }

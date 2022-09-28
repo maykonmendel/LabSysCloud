@@ -12,5 +12,7 @@ namespace LabSysCloud.Domain.Entities.ValueObjects
         public string TelefoneResidencial { get; set; }
         public int DDDCelular { get; set; }
         public string Celular { get; set; }
+        public long PacienteId { get; set; }
+        public Paciente Paciente { get; set; }
     }
 }

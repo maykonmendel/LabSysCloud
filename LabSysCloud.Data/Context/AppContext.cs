@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Entities.ValueObjects;
+using LabSysCloud.Data.Mapping;
 
 namespace LabSysCloud.Data.Context
 {
@@ -21,6 +22,10 @@ namespace LabSysCloud.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new PacienteMap());
+            modelBuilder.ApplyConfiguration(new EnderecoMap());
+            modelBuilder.ApplyConfiguration(new ContatoMap());
+
             base.OnModelCreating(modelBuilder);            
         }
     }
