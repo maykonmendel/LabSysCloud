@@ -12,7 +12,7 @@ namespace LabSysCloud.Domain.Interfaces
         TEntity Adicionar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
         TEntity Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
         void Deletar(long id);
-        IList<TEntity> ListarTodos();
-        TEntity ListarPorId(long id);
+        IList<TEntity> BuscarTodos();
+        TEntity BuscarPorId(long id);
     }    
 }
