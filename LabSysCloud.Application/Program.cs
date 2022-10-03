@@ -1,3 +1,4 @@
+using LabSysCloud.CrossCuting.Middleware;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.OpenApi.Models;
 
@@ -40,6 +41,8 @@ app.UseRewriter(option);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
 app.MapControllers();
 
