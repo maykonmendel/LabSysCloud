@@ -6,7 +6,7 @@ using FluentValidation;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 
-namespace LabSysCloud.Service.Services
+namespace LabSysCloud.Domain.Services
 {
     public class ServicoBase<TEntity> : IServicoBase<TEntity> where TEntity : EntidadeBase
     {
