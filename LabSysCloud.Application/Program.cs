@@ -1,4 +1,8 @@
 using LabSysCloud.CrossCuting.Middleware;
+using LabSysCloud.Data.Repositories;
+using LabSysCloud.Domain.Entities;
+using LabSysCloud.Domain.Interfaces;
+using LabSysCloud.Domain.Services;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.OpenApi.Models;
 
@@ -8,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+//Add class program
+builder.Services.AddScoped<IRepositorioBase<Paciente>, RepositorioBase<Paciente>>();
+builder.Services.AddScoped<IServicoBase<Paciente>, ServicoBase<Paciente>>();
 
 builder.Services.AddSwaggerGen(options => 
 {

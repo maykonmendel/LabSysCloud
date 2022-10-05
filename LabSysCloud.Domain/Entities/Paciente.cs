@@ -26,6 +26,11 @@ namespace LabSysCloud.Domain.Entities
         public Contato Contato { get; set; }
         public long EnderecoId { get; set; }
         public Endereco Endereco { get; set; }
-        
+
+        public Paciente() 
+        {
+            Contato = new Contato();
+            Endereco = new Endereco();
+        }    
     }
 }
