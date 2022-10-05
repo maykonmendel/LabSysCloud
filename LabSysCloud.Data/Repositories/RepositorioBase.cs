@@ -11,9 +11,9 @@ namespace LabSysCloud.Data.Repositories
 {
     public class RepositorioBase<TEntity> : IRepositorioBase<TEntity> where TEntity : EntidadeBase
     {
-        protected readonly LabSysCloudContext _context;
+        protected readonly ApplicationDbContext _context;
 
-        public RepositorioBase(LabSysCloudContext context)
+        public RepositorioBase(ApplicationDbContext context)
         {
             _context = context;
         }
