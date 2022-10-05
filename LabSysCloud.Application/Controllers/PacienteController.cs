@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LabSysCloud.Application.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("[controller]")]   
     public class PacienteController : Controller
     {
         private IServicoBase<Paciente> _baseServico;
@@ -40,7 +39,7 @@ namespace LabSysCloud.Application.Controllers
             return Execute(() => _baseServico.Adicionar<PacienteValidator>(paciente).Id);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult Put ([FromBody] Paciente paciente)
         {
             if(paciente == null)
