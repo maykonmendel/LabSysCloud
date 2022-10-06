@@ -1,9 +1,16 @@
+using System.Reflection;
+using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using LabSysCloud.Application.Models.Mappings;
 using LabSysCloud.CrossCuting.Middleware;
+using LabSysCloud.Data.Context;
 using LabSysCloud.Data.Repositories;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 using LabSysCloud.Domain.Services;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +20,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-//Add class program
+//Fluent-Validation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddFluentValidationClientsideAdapters();
+
+//Injeção de Repositórios e Serviços
 builder.Services.AddScoped<IRepositorioBase<Paciente>, RepositorioBase<Paciente>>();
 builder.Services.AddScoped<IServicoBase<Paciente>, ServicoBase<Paciente>>();
 
@@ -28,6 +40,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+var connectionString = builder.Configuration.GetConnectionString("LabSysCloudConn");
+builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(connectionString, b => b.MigrationsAssembly("LabSysCloud.Data")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +55,11 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;        
     });    
 }
+
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingProfile());
+});
 
 var option = new RewriteOptions();
 option.AddRedirect("^$", "swagger");
@@ -54,4 +74,17 @@ app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
 app.MapControllers();
 
+UpdateDatabase(app);
+
 app.Run();
+
+void UpdateDatabase(IApplicationBuilder app)
+{
+    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+    {
+        using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
+        {
+            context.Database.Migrate();            
+        }
+    }
+}
