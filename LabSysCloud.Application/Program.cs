@@ -56,10 +56,10 @@ if (app.Environment.IsDevelopment())
     });    
 }
 
-var mappingConfig = new MapperConfiguration(mc =>
-{
-    mc.AddProfile(new MappingProfile());
-});
+//Configure Auto-Mapper
+builder.Services.AddAutoMapper(
+    typeof(PacienteProfile)
+);
 
 var option = new RewriteOptions();
 option.AddRedirect("^$", "swagger");
