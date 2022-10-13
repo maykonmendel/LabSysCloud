@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LabSysCloud.Domain.Entities.Enums;
 using LabSysCloud.Domain.Entities.ValueObjects;
+using LabSysCloud.Domain.Interfaces;
 
 namespace LabSysCloud.Domain.Entities
 {
     public class Paciente : EntidadeBase
-    {
+    {      
         public string Nome { get; set; }
         public Sexo Sexo { get; set; }
         public Etnia Etnia { get; set; }

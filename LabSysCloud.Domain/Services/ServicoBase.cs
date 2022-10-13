@@ -23,26 +23,45 @@ namespace LabSysCloud.Domain.Services
             validator.ValidateAndThrow(obj);
         }
 
-        public TEntity Adicionar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+        public async Task<TEntity> Adicionar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
         {
             ValidarObj(obj, Activator.CreateInstance<TValidator>());
             _baseRepositorio.Adicionar(obj);
 
+            await _baseRepositorio.SaveChangesAsync();
+
             return obj;
         }
 
-        public TEntity Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+        public async Task<TEntity> Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
         {
             ValidarObj(obj, Activator.CreateInstance<TValidator>());
             _baseRepositorio.Atualizar(obj);
 
+            await _baseRepositorio.SaveChangesAsync();
+
             return obj;
         }
 
-        public void Deletar(long id) => _baseRepositorio.Deletar(id);
+        public async Task Deletar(long id)
+        {
+            _baseRepositorio.Excluir(id);
 
-        public IList<TEntity> BuscarTodos() => _baseRepositorio.BuscarTodos();
+            await _baseRepositorio.SaveChangesAsync();
+        }
 
-        public TEntity BuscarPorId(long id) => _baseRepositorio.BuscarPorId(id);
+        public async Task<List<TEntity>> BuscarTodos()
+        {
+            var listaEntidades = await _baseRepositorio.BuscarTodos();
+
+            return  listaEntidades;
+        }
+
+        public async Task<TEntity> BuscarPorId(long id)
+        {
+            var entidade = _baseRepositorio.BuscarPorId(id);
+
+            return await entidade;
+        }
     }
 }
