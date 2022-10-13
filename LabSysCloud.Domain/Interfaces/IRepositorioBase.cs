@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LabSysCloud.Domain.Entities;
 
 namespace LabSysCloud.Domain.Interfaces
@@ -10,8 +6,9 @@ namespace LabSysCloud.Domain.Interfaces
     {
         void Adicionar(TEntity obj);
         void Atualizar(TEntity obj);
-        void Deletar(long id);
-        IList<TEntity> BuscarTodos();
-        TEntity BuscarPorId(long id);
+        void Excluir(long id);
+        Task<List<TEntity>> BuscarTodos();
+        Task<TEntity> BuscarPorId(long id);
+        Task SaveChangesAsync();
     }
 }

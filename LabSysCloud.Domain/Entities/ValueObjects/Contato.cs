@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LabSysCloud.Domain.Interfaces;
 
 namespace LabSysCloud.Domain.Entities.ValueObjects
 {
     public class Contato : EntidadeBase
-    {
+    {        
         public string Email { get; set; }
         public int DDDResidencial { get; set; }
         public string TelefoneResidencial { get; set; }
