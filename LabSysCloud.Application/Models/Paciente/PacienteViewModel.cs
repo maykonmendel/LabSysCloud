@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LabSysCloud.Application.Models.Paciente
 {
-    public class PacienteOutputModel
+    public class PacienteViewModel
     {
         
     }
