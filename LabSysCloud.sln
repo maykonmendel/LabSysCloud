@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabSysCloud.Data", "LabSysC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabSysCloud.Domain", "LabSysCloud.Domain\LabSysCloud.Domain.csproj", "{37405B22-DC3C-42E3-945A-A911B917E5F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabSysCloud.Service", "LabSysCloud.Service\LabSysCloud.Service.csproj", "{2635E5CE-13C6-43B6-87E5-1BA7359EAF8B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

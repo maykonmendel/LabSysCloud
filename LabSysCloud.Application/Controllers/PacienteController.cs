@@ -1,4 +1,5 @@
 using AutoMapper;
+using LabSysCloud.Application.Models.Paciente;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 using LabSysCloud.Domain.Validators;
@@ -17,6 +18,21 @@ namespace LabSysCloud.Application.Controllers
             _baseServico = baseServico;
             _mapper = mapper;
         }    
+
+        [HttpPost]
+        public async Task<ActionResult<PacienteInputModel>> Post([FromBody] PacienteInputModel pacienteInputModel)
+        {
+            if(pacienteInputModel == null)
+            {
+                return NotFound();
+            }
+
+            var paciente = _mapper.Map<Paciente>(pacienteInputModel);
+
+            await _baseServico.Adicionar<PacienteValidator>(paciente);
+
+            return Ok(paciente);
+        }
         
     }
 }
