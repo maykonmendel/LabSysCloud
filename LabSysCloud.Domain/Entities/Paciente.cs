@@ -19,15 +19,7 @@ namespace LabSysCloud.Domain.Entities
         public string PlanoSaude { get; set; }
         public int NumeroRegistro { get; set; }
         public DateTime ValidadeRegistro { get; set; }
-        public long ContatoId { get; set; }
-        public Contato Contato { get; set; }
-        public long EnderecoId { get; set; }
-        public Endereco Endereco { get; set; }
-
-        public Paciente() 
-        {
-            Contato = new Contato();
-            Endereco = new Endereco();
-        }    
+        public Contato Contato { get; set; }        
+        public Endereco Endereco { get; set; }        
     }
 }

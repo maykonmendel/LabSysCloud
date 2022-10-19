@@ -8,7 +8,7 @@ using LabSysCloud.Data.Context;
 using LabSysCloud.Data.Repositories;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
-using LabSysCloud.Domain.Services;
+using LabSysCloud.Service.Services;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -16,6 +16,9 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//Configure Auto-Mapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -55,11 +58,6 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty;        
     });    
 }
-
-//Configure Auto-Mapper
-builder.Services.AddAutoMapper(
-    typeof(PacienteProfile)
-);
 
 var option = new RewriteOptions();
 option.AddRedirect("^$", "swagger");

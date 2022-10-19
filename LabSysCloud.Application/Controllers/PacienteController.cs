@@ -1,8 +1,8 @@
 using AutoMapper;
-using LabSysCloud.Application.Models.Paciente;
+using LabSysCloud.Application.Models.PacienteModels;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
-using LabSysCloud.Domain.Validators;
+using LabSysCloud.Service.Validators;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LabSysCloud.Application.Controllers
@@ -32,6 +32,15 @@ namespace LabSysCloud.Application.Controllers
             await _baseServico.Adicionar<PacienteValidator>(paciente);
 
             return Ok(paciente);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PacienteViewModel>> GetById([FromBody] long id)
+        {
+            var paciente = await _baseServico.BuscarPorId(id);
+            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
+
+            return Ok(pacienteViewModel);
         }
         
     }
