@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LabSysCloud.Application.Controllers
 {
-    [Route("[controller]")]   
+    [Route("api/[controller]")]   
+    [ApiController]
     public class PacienteController : Controller
     {
         private readonly IServicoBase<Paciente> _baseServico;
@@ -31,7 +32,9 @@ namespace LabSysCloud.Application.Controllers
 
             await _baseServico.Adicionar<PacienteValidator>(paciente);
 
-            return Ok(paciente);
+            var pacienteOutput = _mapper.Map<PacienteViewModel>(paciente);
+
+            return Ok(pacienteOutput);
         }
 
         [HttpGet("{id}")]
