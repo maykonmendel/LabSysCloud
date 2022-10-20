@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using LabSysCloud.Domain.Entities;
 
-namespace LabSysCloud.Domain.Validators
+namespace LabSysCloud.Service.Validators
 {
     public class PacienteValidator : AbstractValidator<Paciente>
     {

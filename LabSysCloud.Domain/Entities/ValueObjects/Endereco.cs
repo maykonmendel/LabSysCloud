@@ -1,9 +1,11 @@
 using LabSysCloud.Domain.Entities.Enums;
 using LabSysCloud.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabSysCloud.Domain.Entities.ValueObjects
 {
-    public class Endereco : EntidadeBase
+    [Owned]
+    public class Endereco
     {
         public string CEP { get; set; }
         public string Logradouro { get; set; }
@@ -11,8 +13,6 @@ namespace LabSysCloud.Domain.Entities.ValueObjects
         public string Complemento { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
-        public Estado Estado { get; set; }
-        public long PacienteId { get; set; }
-        public Paciente Paciente { get; set; }
+        public Estado Estado { get; set; }        
     }
 }

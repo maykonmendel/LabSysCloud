@@ -46,9 +46,8 @@ namespace LabSysCloud.CrossCuting.Middleware
 
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = code;
-            //string message = code == StatusCodes.Status500InternalServerError ? "Ocorreu um erro no nosso servidor, tente novamente!" : ex.Message;
             string message = ex.Message;
-            return httpContext.Response.WriteAsync(JsonSerializer.Serialize(new { Response = code.ToString(), Message = message }));
+            return httpContext.Response.WriteAsync(JsonSerializer.Serialize(new { StatusCode = code.ToString(), Mensagem = message }));
         }
     }
 }

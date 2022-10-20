@@ -1,11 +1,10 @@
 using LabSysCloud.Domain.Entities.Enums;
 using LabSysCloud.Domain.Entities.ValueObjects;
-using LabSysCloud.Domain.Interfaces;
 
-namespace LabSysCloud.Domain.Entities
+namespace LabSysCloud.Application.Models.PacienteModels
 {
-    public class Paciente : EntidadeBase
-    {      
+    public class PacienteInputModel
+    {
         public string Nome { get; set; }
         public Sexo Sexo { get; set; }
         public Etnia Etnia { get; set; }
@@ -19,7 +18,7 @@ namespace LabSysCloud.Domain.Entities
         public string PlanoSaude { get; set; }
         public int NumeroRegistro { get; set; }
         public DateTime ValidadeRegistro { get; set; }
-        public Contato Contato { get; set; }        
-        public Endereco Endereco { get; set; }        
+        public Contato Contato { get; set; }       
+        public Endereco Endereco { get; set; }
     }
 }

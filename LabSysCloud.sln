@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabSysCloud.Data", "LabSysC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabSysCloud.Domain", "LabSysCloud.Domain\LabSysCloud.Domain.csproj", "{37405B22-DC3C-42E3-945A-A911B917E5F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabSysCloud.Service", "LabSysCloud.Service\LabSysCloud.Service.csproj", "{2635E5CE-13C6-43B6-87E5-1BA7359EAF8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabSysCloud.Service", "LabSysCloud.Service\LabSysCloud.Service.csproj", "{844E7E28-D826-4141-8637-8F62014AD143}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +42,13 @@ Global
 		{2635E5CE-13C6-43B6-87E5-1BA7359EAF8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2635E5CE-13C6-43B6-87E5-1BA7359EAF8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2635E5CE-13C6-43B6-87E5-1BA7359EAF8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BDFEA21-2523-4BC8-8CD1-1F9A4EEFF5F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BDFEA21-2523-4BC8-8CD1-1F9A4EEFF5F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BDFEA21-2523-4BC8-8CD1-1F9A4EEFF5F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BDFEA21-2523-4BC8-8CD1-1F9A4EEFF5F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{844E7E28-D826-4141-8637-8F62014AD143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{844E7E28-D826-4141-8637-8F62014AD143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{844E7E28-D826-4141-8637-8F62014AD143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{844E7E28-D826-4141-8637-8F62014AD143}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

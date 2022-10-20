@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LabSysCloud.Domain.Entities.Enums;
+using LabSysCloud.Domain.Entities.ValueObjects;
 
-namespace LabSysCloud.Application.Models.Paciente
+namespace LabSysCloud.Application.Models.PacienteModels
 {
-    public class PacienteInputModel
+    public class PacienteViewModel
     {
+        public long Id { get; set; }
         public string Nome { get; set; }
-        public Sexo Sexo { get; set; }
         public Etnia Etnia { get; set; }
         public EstadoCivil EstadoCivil { get; set; }
         public DateTime DataNascimento { get; set; }
@@ -21,7 +22,7 @@ namespace LabSysCloud.Application.Models.Paciente
         public string PlanoSaude { get; set; }
         public int NumeroRegistro { get; set; }
         public DateTime ValidadeRegistro { get; set; }
-        public long ContatoId { get; set; }       
-        public long EnderecoId { get; set; }        
+        public Contato Contato { get; set; }
+        public Endereco Endereco { get; set; }
     }
 }
