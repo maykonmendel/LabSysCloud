@@ -21,34 +21,31 @@ namespace LabSysCloud.Data.Repositories
         public virtual void Adicionar(TEntity obj)
         {
             _context.Set<TEntity>().Add(obj);
+            _context.SaveChanges();
         }
 
         public virtual void Atualizar(TEntity obj)
         {
+            _context.Entry(obj).State = EntityState.Modified;
             _context.Set<TEntity>().Update(obj);
+            _context.SaveChanges();
         }
 
-        public virtual async Task<TEntity> BuscarPorId(long id)
+        public virtual TEntity BuscarPorId(long id)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            return _context.Set<TEntity>().Find(id);
         }
 
-        public virtual async Task<List<TEntity>> BuscarTodos()
+        public virtual IList<TEntity> BuscarTodos()
         {
-            return await _context.Set<TEntity>().AsNoTracking().ToListAsync();
+            return _context.Set<TEntity>().AsNoTracking().ToList();
         }
 
         public virtual void Excluir(long id)
         {
             TEntity entityToDelete = _context.Set<TEntity>().Find(id);
-
             _context.Set<TEntity>().Remove(entityToDelete);
+            _context.SaveChanges();
         }
-
-        public virtual async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
-
     }
 }
