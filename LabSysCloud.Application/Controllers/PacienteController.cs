@@ -1,5 +1,6 @@
 using AutoMapper;
 using LabSysCloud.Application.Models.PacienteModels;
+using LabSysCloud.CrossCuting.S3Bucket;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 using LabSysCloud.Service.Validators;
@@ -21,29 +22,58 @@ namespace LabSysCloud.Application.Controllers
         }    
 
         [HttpPost]
-        public async Task<ActionResult<PacienteInputModel>> Post([FromBody] PacienteInputModel pacienteInputModel)
+        public IActionResult Post([FromForm] PacienteInputModel pacienteInputModel)
         {
             if(pacienteInputModel == null)
             {
                 return NotFound();
             }
 
-            var paciente = _mapper.Map<Paciente>(pacienteInputModel);
+            var uploadService = new S3BucketService();
 
-            await _baseServico.Adicionar<PacienteValidator>(paciente);
+            if(pacienteInputModel.Image != null)
+            {
+                var image = uploadService.UploadImagem(pacienteInputModel.Image);
+                pacienteInputModel.Foto = image.Key;
+            }
 
-            var pacienteOutput = _mapper.Map<PacienteViewModel>(paciente);
+            var paciente = _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
 
-            return Ok(pacienteOutput);
+            return Ok(paciente);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] PacienteInputModel pacienteInputModel)
+        {            
+            if(pacienteInputModel == null)
+            {
+                return NotFound();
+            }
+
+            var pacienteEditado = _baseServico.Atualizar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
+
+            return Ok(pacienteEditado);
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var pacientes = _baseServico.BuscarTodos<PacienteViewModel>();
+            
+            return Ok(pacientes);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PacienteViewModel>> GetById([FromBody] long id)
+        public IActionResult GetById(long id)
         {
-            var paciente = await _baseServico.BuscarPorId(id);
-            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
+            if(id == 0) 
+            {
+                return NotFound();
+            }
 
-            return Ok(pacienteViewModel);
+            var pacienteSelecionado = _baseServico.BuscarPorId<PacienteViewModel>(id);
+
+            return Ok(pacienteSelecionado);
         }
         
     }

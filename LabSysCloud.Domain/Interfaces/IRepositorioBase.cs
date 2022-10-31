@@ -6,9 +6,8 @@ namespace LabSysCloud.Domain.Interfaces
     {
         void Adicionar(TEntity obj);
         void Atualizar(TEntity obj);
-        void Excluir(long id);
-        Task<List<TEntity>> BuscarTodos();
-        Task<TEntity> BuscarPorId(long id);
-        Task SaveChangesAsync();
+        void Excluir(long id);        
+        IList<TEntity> BuscarTodos();
+        TEntity BuscarPorId(long id);              
     }
 }
