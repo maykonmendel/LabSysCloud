@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentValidation;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
@@ -11,10 +12,12 @@ namespace LabSysCloud.Service.Services
     public class ServicoBase<TEntity> : IServicoBase<TEntity> where TEntity : EntidadeBase
     {
         private readonly IRepositorioBase<TEntity> _baseRepositorio;
+        private readonly IMapper _mapper;
 
-        public ServicoBase(IRepositorioBase<TEntity> baseRepositorio)
+        public ServicoBase(IRepositorioBase<TEntity> baseRepositorio, IMapper mapper)
         {
             _baseRepositorio = baseRepositorio;
+            _mapper = mapper;
         }
 
         private void ValidarObj(TEntity obj, AbstractValidator<TEntity> validator)
@@ -23,45 +26,55 @@ namespace LabSysCloud.Service.Services
             validator.ValidateAndThrow(obj);
         }
 
-        public async Task<TEntity> Adicionar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+        public TOutputModel Adicionar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
+            where TValidator : AbstractValidator<TEntity>
+            where TInputModel : class
+            where TOutputModel : class
         {
-            ValidarObj(obj, Activator.CreateInstance<TValidator>());
-            _baseRepositorio.Adicionar(obj);
+            TEntity entity = _mapper.Map<TEntity>(inputModel);
 
-            await _baseRepositorio.SaveChangesAsync();
+            ValidarObj(entity, Activator.CreateInstance<TValidator>());
+            _baseRepositorio.Adicionar(entity);                       
 
-            return obj;
+            TOutputModel outputModel = _mapper.Map<TOutputModel>(entity);
+
+            return outputModel;
         }
 
-        public async Task<TEntity> Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+        public TOutputModel Atualizar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
+            where TValidator : AbstractValidator<TEntity>
+            where TInputModel : class
+            where TOutputModel : class
         {
-            ValidarObj(obj, Activator.CreateInstance<TValidator>());
-            _baseRepositorio.Atualizar(obj);
+            TEntity entity = _mapper.Map<TEntity>(inputModel);
 
-            await _baseRepositorio.SaveChangesAsync();
+            ValidarObj(entity, Activator.CreateInstance<TValidator>());
+            _baseRepositorio.Atualizar(entity);           
 
-            return obj;
+            TOutputModel outputModel = _mapper.Map<TOutputModel>(entity);
+
+            return outputModel;
         }
 
-        public async Task Deletar(long id)
+        public void Deletar(long id)
         {
-            _baseRepositorio.Excluir(id);
-
-            await _baseRepositorio.SaveChangesAsync();
+            _baseRepositorio.Excluir(id);           
         }
 
-        public async Task<List<TEntity>> BuscarTodos()
+        public IEnumerable<TOutputModel> BuscarTodos<TOutputModel>() where TOutputModel : class
         {
-            var listaEntidades = await _baseRepositorio.BuscarTodos();
+            var entities = _baseRepositorio.BuscarTodos();
+            var outputModel = entities.Select(s => _mapper.Map<TOutputModel>(s));
 
-            return  listaEntidades;
+            return outputModel;
         }
 
-        public async Task<TEntity> BuscarPorId(long id)
+        public TOutputModel BuscarPorId<TOutputModel>(long id) where TOutputModel : class
         {
-            var entidade = _baseRepositorio.BuscarPorId(id);
+            var entity = _baseRepositorio.BuscarPorId(id);
+            var outputModel = _mapper.Map<TOutputModel>(entity);
 
-            return await entidade;
+            return outputModel;
         }
     }
 }

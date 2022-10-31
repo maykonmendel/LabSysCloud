@@ -21,29 +21,50 @@ namespace LabSysCloud.Application.Controllers
         }    
 
         [HttpPost]
-        public async Task<ActionResult<PacienteInputModel>> Post([FromBody] PacienteInputModel pacienteInputModel)
+        public IActionResult Post([FromBody] PacienteInputModel pacienteInputModel)
         {
             if(pacienteInputModel == null)
             {
                 return NotFound();
             }
 
-            var paciente = _mapper.Map<Paciente>(pacienteInputModel);
+            var paciente = _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
 
-            await _baseServico.Adicionar<PacienteValidator>(paciente);
+            return Ok(paciente);
+        }
 
-            var pacienteOutput = _mapper.Map<PacienteViewModel>(paciente);
+        [HttpPut]
+        public IActionResult Put([FromBody] PacienteInputModel pacienteInputModel)
+        {            
+            if(pacienteInputModel == null)
+            {
+                return NotFound();
+            }
 
-            return Ok(pacienteOutput);
+            var pacienteEditado = _baseServico.Atualizar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
+
+            return Ok(pacienteEditado);
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var pacientes = _baseServico.BuscarTodos<PacienteViewModel>();
+            
+            return Ok(pacientes);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PacienteViewModel>> GetById([FromBody] long id)
+        public IActionResult GetById(long id)
         {
-            var paciente = await _baseServico.BuscarPorId(id);
-            var pacienteViewModel = _mapper.Map<PacienteViewModel>(paciente);
+            if(id == 0) 
+            {
+                return NotFound();
+            }
 
-            return Ok(pacienteViewModel);
+            var pacienteSelecionado = _baseServico.BuscarPorId<PacienteViewModel>(id);
+
+            return Ok(pacienteSelecionado);
         }
         
     }
