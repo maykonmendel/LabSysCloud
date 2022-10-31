@@ -1,5 +1,6 @@
 using AutoMapper;
 using LabSysCloud.Application.Models.PacienteModels;
+using LabSysCloud.CrossCuting.S3Bucket;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 using LabSysCloud.Service.Validators;
@@ -21,11 +22,19 @@ namespace LabSysCloud.Application.Controllers
         }    
 
         [HttpPost]
-        public IActionResult Post([FromBody] PacienteInputModel pacienteInputModel)
+        public IActionResult Post([FromForm] PacienteInputModel pacienteInputModel)
         {
             if(pacienteInputModel == null)
             {
                 return NotFound();
+            }
+
+            var uploadService = new S3BucketService();
+
+            if(pacienteInputModel.Image != null)
+            {
+                var image = uploadService.UploadImagem(pacienteInputModel.Image);
+                pacienteInputModel.Foto = image.Key;
             }
 
             var paciente = _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
