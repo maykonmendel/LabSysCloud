@@ -13,7 +13,7 @@ namespace LabSysCloud.Application.Models.Mappings
         public MappingProfile()
         {
             CreateMap<PacienteInputModel, Paciente>();
-            CreateMap<Paciente, PacienteViewModel>();
+            CreateMap<Paciente, PacienteViewModel>();            
         }
     }
 }

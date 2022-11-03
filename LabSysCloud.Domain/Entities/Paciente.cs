@@ -7,9 +7,9 @@ namespace LabSysCloud.Domain.Entities
     public class Paciente : EntidadeBase
     {      
         public string Nome { get; set; }
-        public Sexo Sexo { get; set; }
-        public Etnia Etnia { get; set; }
-        public EstadoCivil EstadoCivil { get; set; }
+        public Sexo? Sexo { get; set; }
+        public Etnia? Etnia { get; set; }
+        public EstadoCivil? EstadoCivil { get; set; }
         public DateTime DataNascimento { get; set; }
         public string CPF { get; set; }
         public string RG { get; set; }
