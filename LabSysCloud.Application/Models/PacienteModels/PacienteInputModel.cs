@@ -19,7 +19,7 @@ namespace LabSysCloud.Application.Models.PacienteModels
         public string PlanoSaude { get; set; }
         public int NumeroRegistro { get; set; }
         public DateTime ValidadeRegistro { get; set; }
-        public Contato? Contato { get; set; }       
-        public Endereco? Endereco { get; set; }
+        public Contato Contato { get; set; }       
+        public Endereco Endereco { get; set; }
     }
 }
