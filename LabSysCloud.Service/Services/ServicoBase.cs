@@ -26,7 +26,7 @@ namespace LabSysCloud.Service.Services
             validator.ValidateAndThrow(obj);
         }
 
-        public TOutputModel Adicionar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
+        public async Task<TOutputModel> Adicionar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
             where TValidator : AbstractValidator<TEntity>
             where TInputModel : class
             where TOutputModel : class
@@ -34,14 +34,15 @@ namespace LabSysCloud.Service.Services
             TEntity entity = _mapper.Map<TEntity>(inputModel);
 
             ValidarObj(entity, Activator.CreateInstance<TValidator>());
-            _baseRepositorio.Adicionar(entity);                       
+            _baseRepositorio.Adicionar(entity);
+            await _baseRepositorio.SaveChangesAsync();
 
             TOutputModel outputModel = _mapper.Map<TOutputModel>(entity);
 
             return outputModel;
         }
 
-        public TOutputModel Atualizar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
+        public async Task<TOutputModel> Atualizar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
             where TValidator : AbstractValidator<TEntity>
             where TInputModel : class
             where TOutputModel : class
@@ -49,29 +50,31 @@ namespace LabSysCloud.Service.Services
             TEntity entity = _mapper.Map<TEntity>(inputModel);
 
             ValidarObj(entity, Activator.CreateInstance<TValidator>());
-            _baseRepositorio.Atualizar(entity);           
+            _baseRepositorio.Atualizar(entity);
+            await _baseRepositorio.SaveChangesAsync();
 
             TOutputModel outputModel = _mapper.Map<TOutputModel>(entity);
 
             return outputModel;
         }
 
-        public void Deletar(long id)
+        public async Task Deletar(long id)
         {
-            _baseRepositorio.Excluir(id);           
+            _baseRepositorio.Excluir(id);
+            await _baseRepositorio.SaveChangesAsync();
         }
 
-        public IEnumerable<TOutputModel> BuscarTodos<TOutputModel>() where TOutputModel : class
+        public async Task<IEnumerable<TOutputModel>> BuscarTodos<TOutputModel>() where TOutputModel : class
         {
-            var entities = _baseRepositorio.BuscarTodos();
+            var entities = await _baseRepositorio.BuscarTodos();
             var outputModel = entities.Select(s => _mapper.Map<TOutputModel>(s));
 
             return outputModel;
         }
 
-        public TOutputModel BuscarPorId<TOutputModel>(long id) where TOutputModel : class
+        public async Task<TOutputModel> BuscarPorId<TOutputModel>(long id) where TOutputModel : class
         {
-            var entity = _baseRepositorio.BuscarPorId(id);
+            var entity = await _baseRepositorio.BuscarPorId(id);
             var outputModel = _mapper.Map<TOutputModel>(entity);
 
             return outputModel;

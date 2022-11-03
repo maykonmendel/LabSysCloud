@@ -11,8 +11,7 @@ namespace LabSysCloud.Application.Models.PacienteModels
         public EstadoCivil? EstadoCivil { get; set; }
         public DateTime DataNascimento { get; set; }
         public string CPF { get; set; }
-        public string RG { get; set; }
-        public IFormFile Image { get; set; }
+        public string RG { get; set; }       
         public string Foto { get; set; }
         public string CNS { get; set; }
         public string Convenio { get; set; }
