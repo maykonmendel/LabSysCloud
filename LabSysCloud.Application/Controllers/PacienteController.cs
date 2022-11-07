@@ -4,10 +4,11 @@ using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 using LabSysCloud.Service.Validators;
 using Microsoft.AspNetCore.Mvc;
+using ReflectionIT.Mvc.Paging;
 
 namespace LabSysCloud.Application.Controllers
 {
-    [Route("api/[controller]")]   
+    [Route("api/[controller]")]
     [ApiController]
     public class PacienteController : Controller
     {
@@ -18,15 +19,15 @@ namespace LabSysCloud.Application.Controllers
         {
             _baseServico = baseServico;
             _mapper = mapper;
-        }    
+        }
 
         [HttpPost]
-        public async Task<ActionResult<PacienteInputModel>> Post([FromForm] PacienteInputModel pacienteInputModel)
+        public async Task<ActionResult<PacienteInputModel>> Post([FromBody] PacienteInputModel pacienteInputModel)
         {
-            if(pacienteInputModel == null)
+            if (pacienteInputModel == null)
             {
                 return NotFound();
-            }          
+            }
 
             var paciente = await _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
 
@@ -35,8 +36,8 @@ namespace LabSysCloud.Application.Controllers
 
         [HttpPut]
         public async Task<ActionResult<PacienteInputModel>> Put([FromBody] PacienteInputModel pacienteInputModel)
-        {            
-            if(pacienteInputModel == null)
+        {
+            if (pacienteInputModel == null)
             {
                 return NotFound();
             }
@@ -47,17 +48,18 @@ namespace LabSysCloud.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PacienteViewModel>> GetAll()
+        public async Task<ActionResult<PacienteViewModel>> GetAll(int items = 5, int page = 1)
         {
-            var pacientes = await _baseServico.BuscarTodos<PacienteViewModel>();
-            
-            return Ok(pacientes);
+            var query = await _baseServico.BuscarTodos<PacienteViewModel>();
+            var model = PagingList.Create(query, items, page);
+
+            return Ok(model);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<PacienteViewModel>> GetById(long id)
         {
-            if(id == 0) 
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -66,6 +68,5 @@ namespace LabSysCloud.Application.Controllers
 
             return Ok(pacienteSelecionado);
         }
-        
     }
 }
