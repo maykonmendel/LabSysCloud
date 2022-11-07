@@ -25,5 +25,5 @@ namespace LabSysCloud.Domain.Interfaces
         Task<TOutputModel> BuscarPorId<TOutputModel>(long id) where TOutputModel : class;
 
         Task Deletar(long id);
-    }    
+    }
 }
