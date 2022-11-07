@@ -1,14 +1,14 @@
 using AutoMapper;
 using LabSysCloud.Application.Models.PacienteModels;
-using LabSysCloud.CrossCuting.S3Bucket;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 using LabSysCloud.Service.Validators;
 using Microsoft.AspNetCore.Mvc;
+using ReflectionIT.Mvc.Paging;
 
 namespace LabSysCloud.Application.Controllers
 {
-    [Route("api/[controller]")]   
+    [Route("api/[controller]")]
     [ApiController]
     public class PacienteController : Controller
     {
@@ -19,62 +19,54 @@ namespace LabSysCloud.Application.Controllers
         {
             _baseServico = baseServico;
             _mapper = mapper;
-        }    
+        }
 
         [HttpPost]
-        public IActionResult Post([FromForm] PacienteInputModel pacienteInputModel)
+        public async Task<ActionResult<PacienteInputModel>> Post([FromBody] PacienteInputModel pacienteInputModel)
         {
-            if(pacienteInputModel == null)
+            if (pacienteInputModel == null)
             {
                 return NotFound();
             }
 
-            var uploadService = new S3BucketService();
-
-            if(pacienteInputModel.Image != null)
-            {
-                var image = uploadService.UploadImagem(pacienteInputModel.Image);
-                pacienteInputModel.Foto = image.Key;
-            }
-
-            var paciente = _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
+            var paciente = await _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
 
             return Ok(paciente);
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] PacienteInputModel pacienteInputModel)
-        {            
-            if(pacienteInputModel == null)
+        public async Task<ActionResult<PacienteInputModel>> Put([FromBody] PacienteInputModel pacienteInputModel)
+        {
+            if (pacienteInputModel == null)
             {
                 return NotFound();
             }
 
-            var pacienteEditado = _baseServico.Atualizar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
+            var pacienteEditado = await _baseServico.Atualizar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
 
             return Ok(pacienteEditado);
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<PacienteViewModel>> GetAll(int items = 5, int page = 1)
         {
-            var pacientes = _baseServico.BuscarTodos<PacienteViewModel>();
-            
-            return Ok(pacientes);
+            var query = await _baseServico.BuscarTodos<PacienteViewModel>();
+            var model = PagingList.Create(query, items, page);
+
+            return Ok(model);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(long id)
+        public async Task<ActionResult<PacienteViewModel>> GetById(long id)
         {
-            if(id == 0) 
+            if (id == 0)
             {
                 return NotFound();
             }
 
-            var pacienteSelecionado = _baseServico.BuscarPorId<PacienteViewModel>(id);
+            var pacienteSelecionado = await _baseServico.BuscarPorId<PacienteViewModel>(id);
 
             return Ok(pacienteSelecionado);
         }
-        
     }
 }

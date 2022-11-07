@@ -10,18 +10,20 @@ namespace LabSysCloud.Domain.Interfaces
         // Task<List<TEntity>> BuscarTodos();
         // Task<TEntity> BuscarPorId(long id);
 
-        TOutputModel Adicionar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
+        Task<TOutputModel> Adicionar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
             where TValidator : AbstractValidator<TEntity>
             where TInputModel : class
             where TOutputModel : class;
 
-        TOutputModel Atualizar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
+        Task<TOutputModel> Atualizar<TInputModel, TOutputModel, TValidator>(TInputModel inputModel)
             where TValidator : AbstractValidator<TEntity>
             where TInputModel : class
             where TOutputModel : class;
 
-        IEnumerable<TOutputModel> BuscarTodos<TOutputModel>() where TOutputModel : class;
-        TOutputModel BuscarPorId<TOutputModel>(long id) where TOutputModel : class;
-        void Deletar(long id);
-    }    
+        Task<IEnumerable<TOutputModel>> BuscarTodos<TOutputModel>() where TOutputModel : class;
+
+        Task<TOutputModel> BuscarPorId<TOutputModel>(long id) where TOutputModel : class;
+
+        Task Deletar(long id);
+    }
 }

@@ -12,6 +12,7 @@ using LabSysCloud.Service.Services;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using ReflectionIT.Mvc.Paging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Configure Auto-Mapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddPaging(options =>
+{
+    options.PageParameterName = "pageIndex";
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -32,14 +37,14 @@ builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddScoped<IRepositorioBase<Paciente>, RepositorioBase<Paciente>>();
 builder.Services.AddScoped<IServicoBase<Paciente>, ServicoBase<Paciente>>();
 
-builder.Services.AddSwaggerGen(options => 
+builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "LabSysCloud API",
         Version = "v1",
         Description = "API do sistema LabSysCloud, desenvolvido na disciplina de C#",
-        Contact = new OpenApiContact() { Name = "ELFUTEC", Email = "coordenacao.elfutec@gmail.com", Url = new Uri("http://www.elfutec.com")}
+        Contact = new OpenApiContact() { Name = "ELFUTEC", Email = "coordenacao.elfutec@gmail.com", Url = new Uri("http://www.elfutec.com") }
     });
 });
 
@@ -52,11 +57,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options => 
+    app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "LabSysCloud");
-        options.RoutePrefix = string.Empty;        
-    });    
+        options.RoutePrefix = string.Empty;
+    });
 }
 
 var option = new RewriteOptions();
@@ -82,7 +87,7 @@ void UpdateDatabase(IApplicationBuilder app)
     {
         using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
         {
-            context.Database.Migrate();            
+            context.Database.Migrate();
         }
     }
 }
