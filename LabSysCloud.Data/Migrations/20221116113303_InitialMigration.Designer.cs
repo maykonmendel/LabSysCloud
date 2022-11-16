@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabSysCloud.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221019115130_InitialMigration")]
+    [Migration("20221116113303_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,10 +44,10 @@ namespace LabSysCloud.Data.Migrations
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EstadoCivil")
+                    b.Property<int?>("EstadoCivil")
                         .HasColumnType("int");
 
-                    b.Property<int>("Etnia")
+                    b.Property<int?>("Etnia")
                         .HasColumnType("int");
 
                     b.Property<string>("Foto")
@@ -56,8 +56,8 @@ namespace LabSysCloud.Data.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NumeroRegistro")
-                        .HasColumnType("int");
+                    b.Property<string>("NumeroRegistro")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PlanoSaude")
                         .HasColumnType("nvarchar(max)");
@@ -65,7 +65,7 @@ namespace LabSysCloud.Data.Migrations
                     b.Property<string>("RG")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Sexo")
+                    b.Property<int?>("Sexo")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ValidadeRegistro")
@@ -74,6 +74,28 @@ namespace LabSysCloud.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Pacientes");
+                });
+
+            modelBuilder.Entity("LabSysCloud.Domain.Entities.Usuario", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("NomeUsuario")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Senha")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("LabSysCloud.Domain.Entities.Paciente", b =>
@@ -85,12 +107,6 @@ namespace LabSysCloud.Data.Migrations
 
                             b1.Property<string>("Celular")
                                 .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("DDDCelular")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("DDDResidencial")
-                                .HasColumnType("int");
 
                             b1.Property<string>("Email")
                                 .HasColumnType("nvarchar(max)");

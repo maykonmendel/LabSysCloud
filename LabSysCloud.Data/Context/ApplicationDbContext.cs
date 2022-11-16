@@ -10,12 +10,13 @@ namespace LabSysCloud.Data.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Paciente> Pacientes { get; set; }       
+        public DbSet<Paciente> Pacientes { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {           
+        {
             base.OnModelCreating(modelBuilder);
         }
     }
