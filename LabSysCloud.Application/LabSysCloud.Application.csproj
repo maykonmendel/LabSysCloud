@@ -33,8 +33,4 @@
     <ProjectReference Include="..\LabSysCloud.CrossCuting\LabSysCloud.CrossCuting.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\LoginModels\" />
-  </ItemGroup>
-
 </Project>
