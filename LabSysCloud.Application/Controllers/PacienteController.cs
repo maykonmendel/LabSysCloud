@@ -1,5 +1,6 @@
 using AutoMapper;
 using LabSysCloud.Application.Models.PacienteModels;
+using LabSysCloud.CrossCuting.S3Bucket;
 using LabSysCloud.Domain.Entities;
 using LabSysCloud.Domain.Interfaces;
 using LabSysCloud.Service.Validators;
@@ -13,20 +14,28 @@ namespace LabSysCloud.Application.Controllers
     public class PacienteController : Controller
     {
         private readonly IServicoBase<Paciente> _baseServico;
+        private readonly IStorageConfig _s3Bucket;
         private readonly IMapper _mapper;
 
-        public PacienteController(IServicoBase<Paciente> baseServico, IMapper mapper)
+        public PacienteController(IServicoBase<Paciente> baseServico, IStorageConfig s3Bucket, IMapper mapper)
         {
             _baseServico = baseServico;
+            _s3Bucket = s3Bucket;
             _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<ActionResult<PacienteInputModel>> Post([FromBody] PacienteInputModel pacienteInputModel)
+        public async Task<ActionResult<PacienteInputModel>> Post([FromForm] PacienteInputModel pacienteInputModel)
         {
             if (pacienteInputModel == null)
             {
                 return NotFound();
+            }
+
+            if (pacienteInputModel.FotoArquivo != null)
+            {
+                var file = await _s3Bucket.UploadImageAsync(pacienteInputModel.FotoArquivo);
+                pacienteInputModel.Foto = file.Key;
             }
 
             var paciente = await _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);

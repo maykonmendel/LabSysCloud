@@ -4,6 +4,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using LabSysCloud.Application.Models.Mappings;
 using LabSysCloud.CrossCuting.Middleware;
+using LabSysCloud.CrossCuting.S3Bucket;
 using LabSysCloud.Data.Context;
 using LabSysCloud.Data.Repositories;
 using LabSysCloud.Domain.Entities;
@@ -16,7 +17,12 @@ using ReflectionIT.Mvc.Paging;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Adicionando arquivos de configuração por ambiente
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables();
 
 //Configure Auto-Mapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -34,6 +40,7 @@ builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(A
 builder.Services.AddFluentValidationClientsideAdapters();
 
 //Injeção de Repositórios e Serviços
+builder.Services.AddScoped<IStorageConfig, StorageConfig>();
 builder.Services.AddScoped<IRepositorioBase<Paciente>, RepositorioBase<Paciente>>();
 builder.Services.AddScoped<IServicoBase<Paciente>, ServicoBase<Paciente>>();
 
@@ -48,7 +55,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-var connectionString = builder.Configuration.GetConnectionString("LabSysCloudConn");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(connectionString, b => b.MigrationsAssembly("LabSysCloud.Data")));
 
 var app = builder.Build();
