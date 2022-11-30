@@ -16,12 +16,14 @@ namespace LabSysCloud.Application.Controllers
         private readonly IServicoBase<Paciente> _baseServico;
         private readonly IStorageConfig _s3Bucket;
         private readonly IMapper _mapper;
+        private readonly ILogger<PacienteController> _logger;
 
-        public PacienteController(IServicoBase<Paciente> baseServico, IStorageConfig s3Bucket, IMapper mapper)
+        public PacienteController(IServicoBase<Paciente> baseServico, IStorageConfig s3Bucket, IMapper mapper, ILogger<PacienteController> logger)
         {
             _baseServico = baseServico;
             _s3Bucket = s3Bucket;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -39,6 +41,8 @@ namespace LabSysCloud.Application.Controllers
             }
 
             var paciente = await _baseServico.Adicionar<PacienteInputModel, PacienteViewModel, PacienteValidator>(pacienteInputModel);
+
+            _logger.LogInformation("Paciente foi cadastrado com sucesso em ", DateTime.Now.ToString(), ".");
 
             return Ok(paciente);
         }
